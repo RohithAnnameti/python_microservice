@@ -1,29 +1,25 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 from opencensus.trace.samplers import ProbabilitySampler
-import os
+import logging
+from opencensus.ext.azure.log_exporter import AzureLogHandler
 
 app = Flask(__name__)
 
+# Replace with your actual Instrumentation Key from Azure Application Insights
+INSTRUMENTATION_KEY = 'eb5ed67c-09c1-4217-9d25-c09b90da6343'
 
-# Import the `configure_azure_monitor()` function from the
-# `azure.monitor.opentelemetry` package.
-from azure.monitor.opentelemetry import configure_azure_monitor
-
-# Import the tracing api from the `opentelemetry` package.
-from opentelemetry import trace
-
-# Configure OpenTelemetry to use Azure Monitor with the 
-# APPLICATIONINSIGHTS_CONNECTION_STRING environment variable.    
-# Import the `configure_azure_monitor()` function from the `azure.monitor.opentelemetry` package.
-from azure.monitor.opentelemetry import configure_azure_monitor
-
-# Configure OpenTelemetry to use Azure Monitor with the specified connection string.
-# Replace `<your-connection-string>` with the connection string of your Azure Monitor Application Insights resource.
-configure_azure_monitor(
-    connection_string="InstrumentationKey=eb5ed67c-09c1-4217-9d25-c09b90da6343;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=bfc6eeee-bc49-4f69-9676-e1e4b044f50d",
+# Middleware to automatically trace requests and send telemetry to Azure
+middleware = FlaskMiddleware(
+   app,
+   exporter=AzureExporter(connection_string=f'InstrumentationKey={INSTRUMENTATION_KEY}'),
+   sampler=ProbabilitySampler(1.0)  # 1.0 = 100% sampling, 0.1 = 10%, etc.
 )
+# Configure logging for custom telemetry (optional)
+logger = logging.getLogger(__name__)
+logger.addHandler(AzureLogHandler(connection_string=f'InstrumentationKey={INSTRUMENTATION_KEY}'))
+
 ...
 configure_azure_monitor(
 	enable_live_metrics=True
