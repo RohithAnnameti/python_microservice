@@ -7,11 +7,28 @@ import os
 app = Flask(__name__)
 
 
-# Initialize Azure Application Insights telemetry with your Connection String
-exporter = AzureExporter(connection_string='InstrumentationKey=eb5ed67c-09c1-4217-9d25-c09b90da6343;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=bfc6eeee-bc49-4f69-9676-e1e4b044f50d')
+# Import the `configure_azure_monitor()` function from the
+# `azure.monitor.opentelemetry` package.
+from azure.monitor.opentelemetry import configure_azure_monitor
 
-# Set up tracer with a sampling rate (1.0 = 100%, 0.1 = 10% etc.)
-tracer = Tracer(exporter=exporter, sampler=ProbabilitySampler(1.0))
+# Import the tracing api from the `opentelemetry` package.
+from opentelemetry import trace
+
+# Configure OpenTelemetry to use Azure Monitor with the 
+# APPLICATIONINSIGHTS_CONNECTION_STRING environment variable.    
+# Import the `configure_azure_monitor()` function from the `azure.monitor.opentelemetry` package.
+from azure.monitor.opentelemetry import configure_azure_monitor
+
+# Configure OpenTelemetry to use Azure Monitor with the specified connection string.
+# Replace `<your-connection-string>` with the connection string of your Azure Monitor Application Insights resource.
+configure_azure_monitor(
+    connection_string="InstrumentationKey=eb5ed67c-09c1-4217-9d25-c09b90da6343;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=bfc6eeee-bc49-4f69-9676-e1e4b044f50d",
+)
+...
+configure_azure_monitor(
+	enable_live_metrics=True
+)
+...
 
 @app.route("/")
 def hello():
