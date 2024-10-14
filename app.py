@@ -18,15 +18,17 @@ middleware = FlaskMiddleware(
 # Configure logging for custom telemetry (optional)
 logger = logging.getLogger(__name__)
 logger.addHandler(AzureLogHandler(connection_string=f'InstrumentationKey={INSTRUMENTATION_KEY}'))
-@app.route('/greet', methods=['GET'])
-def greet_user():
-   name = request.args.get('name', 'World')
-   logger.info(f"Greeted {name}")  # Log user interaction for telemetry
-   return jsonify(message=f"Hello, {name}!")
-@app.route('/data', methods=['POST'])
-def post_data():
-   data = request.json
-   logger.info(f"Received data: {data}")  # Log the posted data for telemetry
-   return jsonify(received=data)
-if __name__ == '__main__':
-   app.run(host='0.0.0.0', port=5000)
+...
+configure_azure_monitor(
+	enable_live_metrics=True
+)
+...
+
+@app.route("/")
+def hello():
+    return "Welcome to Hello-world Python Application"
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True,host='0.0.0.0',port=port)
+
