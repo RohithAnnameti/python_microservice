@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.10.10-alpine
 COPY . /app
 WORKDIR /app
 EXPOSE 5000
