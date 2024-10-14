@@ -1,7 +1,6 @@
 FROM python:3.6
-MAINTAINER Rohith
-COPY . /usr/app/
-WORKDIR /usr/app/
-RUN pip install -r requirements.txt
+COPY . /app
+WORKDIR /app
 EXPOSE 5000
+RUN pip install -r requirements.txt
 ENTRYPOINT ["python", "app.py"]
