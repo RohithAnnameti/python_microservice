@@ -6,15 +6,12 @@ import os
 
 app = Flask(__name__)
 
-# Configure Application Insights
-instrumentation_key = 'eb5ed67c-09c1-4217-9d25-c09b90da6343'  # Replace with your actual Instrumentation Key
 
-# Enable automatic distributed tracing
-middleware = FlaskMiddleware(
-   app,
-   exporter=AzureExporter(connection_string=f'InstrumentationKey={instrumentation_key}'),
-   sampler=ProbabilitySampler(1.0)
-)
+# Initialize Azure Application Insights telemetry with your Connection String
+exporter = AzureExporter(connection_string='InstrumentationKey=eb5ed67c-09c1-4217-9d25-c09b90da6343;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=bfc6eeee-bc49-4f69-9676-e1e4b044f50d')
+
+# Set up tracer with a sampling rate (1.0 = 100%, 0.1 = 10% etc.)
+tracer = Tracer(exporter=exporter, sampler=ProbabilitySampler(1.0))
 
 @app.route("/")
 def hello():
