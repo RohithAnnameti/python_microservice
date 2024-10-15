@@ -26,7 +26,8 @@ jobs:
         run: echo "Goodbye World"
         shell: bash
 
-  build and push:
+  buildandpush:
+    runs-on: ubuntu-latest
     steps:
       - name: docker build
         run: docker build --no-cache-dir -r requirements.txt -t .
