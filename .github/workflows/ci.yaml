@@ -25,3 +25,8 @@ jobs:
       - name: goodbye world
         run: echo "Goodbye World"
         shell: bash
+
+  build and push:
+    steps:
+      - name: docker build
+        run: docker build --no-cache-dir -r requirements.txt -t .
