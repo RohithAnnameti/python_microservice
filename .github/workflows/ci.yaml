@@ -30,4 +30,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: docker build
-        run: docker build -t image1 .
+        run: docker build -t .
