@@ -30,4 +30,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: docker build
-        run: docker build --no-cache-dir -r requirements.txt -t .
+        run: docker build -t image1 .
