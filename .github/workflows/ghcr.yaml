@@ -1,0 +1,39 @@
+name: Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Set Required Environmental variables
+        id: set_version
+        run: |
+          version=$(date +"%Y%m%d-%H%M")
+          echo "version=$version" >> $GITHUB_ENV
+
+      - name: Build and push image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${GITHUB_REPOSITORY}/my-ghcr:${{ env.version }}
+
+      - name: Upload artifact
+        uses: github-actions/upload-artifact@v3
+        with:
+          name: my-ghcr
+          path: ./my-ghcr.tar
