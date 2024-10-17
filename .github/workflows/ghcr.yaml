@@ -1,9 +1,7 @@
 name: Docker Image
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -35,5 +33,5 @@ jobs:
       - name: Upload artifact
         uses: github-actions/upload-artifact@v1
         with:
-          name: my-ghcr
+          name: my-ghcr:${{ env.version }}
           path: ./my-ghcr.tar
