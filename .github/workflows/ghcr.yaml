@@ -26,4 +26,4 @@ jobs:
           context: .
           push: true
           #tags: ghcr.io/${{ env.GITHUB_REPOSITORY }}/my-ghcr:latest
-          tags: ghcr.io/${{ secrets.GHCR_USERNAME }}/my-image:latest
+          # tags: ghcr.io/${{ secrets.GHCR_USERNAME }}/my-image:latest
