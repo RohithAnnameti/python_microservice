@@ -34,8 +34,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/my-app
-          version: ${{ env.version }} 
+          tags: ${{ secrets.DOCKER_USERNAME }}/my-app:${{ env.version }}
 
       - name: Logout from Docker Hub
         run: docker logout
