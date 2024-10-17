@@ -29,9 +29,3 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${GITHUB_REPOSITORY}/my-ghcr:${{ env.version }}
-
-      - name: Upload artifact
-        uses: github-actions/upload-artifact@v1
-        with:
-          name: my-ghcr:${{ env.version }}
-          path: ./my-ghcr.tar
