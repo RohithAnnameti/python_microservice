@@ -2,10 +2,10 @@ name: Docker Image
 
 on:
   workflow_dispatch:
-env:
-  GITHUB_REPOSITORY: https://github.com/RohithAnnameti/python_microservice
-  GITHUB_REPOSITORY_OWNER: RohithAnnameti
-  GITHUB_REPOSITORY_NAME: python_microservice
+# env:
+#   GITHUB_REPOSITORY: https://github.com/RohithAnnameti/python_microservice
+#   GITHUB_REPOSITORY_OWNER: RohithAnnameti
+#   GITHUB_REPOSITORY_NAME: python_microservice
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -26,4 +26,4 @@ jobs:
           context: .
           push: true
           #tags: ghcr.io/${{ env.GITHUB_REPOSITORY }}/my-ghcr:latest
-          tags: ghcr.io/${GITHUB_REPOSITORY}/my-image:latest
+          tags: ghcr.io/${{ secrets.GHCR_USERNAME }}/my-image:latest
